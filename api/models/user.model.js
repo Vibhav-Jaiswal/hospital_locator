@@ -16,8 +16,13 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    profilePicture: {
+      type: String,
+      default:
+        "https://th.bing.com/th/id/OIP.-gymMKaj3o4z4DoAnkBqzQHaHa?w=209&h=209&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+    },
   },
   { timestamps: true }
 );
 
-export default mongoose.model('user',userSchema);
+export default mongoose.model("user", userSchema);
