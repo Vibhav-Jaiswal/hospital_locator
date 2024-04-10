@@ -1,8 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { signOut } from "../redux/userSlice";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const handleSignoutUser = async () => {
+    try {
+      await fetch("/api/auth/signout");
+      dispatch(signOut());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center py-7">Profile</h1>
@@ -33,10 +44,14 @@ const Profile = () => {
           className="bg-slate-100 rounded-lg p-3"
           defaultValue={"*******************"}
         />
-        
       </form>
       <div className="text-center mt-5">
-        <span className="text-red-700 cursor-pointer ">Sign out</span>
+        <span
+          onClick={handleSignoutUser}
+          className="text-red-700 cursor-pointer "
+        >
+          Sign out
+        </span>
       </div>
     </div>
   );
