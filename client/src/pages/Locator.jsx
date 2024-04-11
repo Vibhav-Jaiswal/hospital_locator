@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { Icon } from "leaflet";
 
 const Locator = () => {
   const [center, setCenter] = useState({ lat: 20.593683, lng: 78.962883 });
@@ -42,6 +43,13 @@ const Locator = () => {
     }
   };
 
+
+
+  const constomIcon = new Icon({
+    iconUrl: "https://i.ibb.co/QpFtw8X/location-removebg-preview.png",
+    iconSize:[48,48],
+  })
+
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="flex flex-1/5 flex-col p-4">
@@ -82,7 +90,7 @@ const Locator = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=uMW2FWSj3uuXB6Sr7SND"
         />
-        <Marker position={center}>
+        <Marker position={center} icon={constomIcon}>
           <Popup>{currentLocation && currentLocation.formatted}</Popup>
         </Marker>
       </MapContainer>
