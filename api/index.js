@@ -3,10 +3,19 @@ import mongoose from "mongoose";
 import dotenv, { config } from "dotenv";
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
+import path from 'path';
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5999;
+const __dirname = path.resolve();
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
+
 app.use(express.json());
 
 mongoose
