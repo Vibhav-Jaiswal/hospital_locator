@@ -8,7 +8,10 @@ const Header = () => {
     <div className=" bg-slate-200">
       <div className="flex justify-between items-center max-w-5xl mx-auto p-3">
         <Link to="/">
-          <h1>Hospital Locator</h1>
+          <h1 className="font-semibold">
+            <span className="text-slate-500">Hospital </span>
+            <span className="text-slate-800">Locator</span>
+          </h1>
         </Link>
         <ul className="flex gap-4">
           <Link to="/location">Search Hospitals</Link>

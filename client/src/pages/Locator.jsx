@@ -5,19 +5,19 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 
 const Locator = () => {
   const [center, setCenter] = useState({ lat: 20.593683, lng: 78.962883 });
+  const [currentLocation, setCurrentLocation] = useState({});
   const ZOOM_LEVEL = 9;
   const mapRef = useRef();
-  const [hospitalData,setHospitalData] = useState({});
 
   useEffect(() => {
     if (mapRef.current) {
       const map = mapRef.current;
       map.flyTo(center, ZOOM_LEVEL, { animate: true });
     }
-    hospitalApi();
+    handleUserCurrentAddress();
   }, [center]);
 
-  const HandleLocation = () => {
+  const handleLocation = () => {
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
@@ -28,37 +28,40 @@ const Locator = () => {
     }
   };
 
-  const hospitalApi = async () =>{
-    const url = 'https://medicine-name-and-details.p.rapidapi.com/?medicineName=prolyte';
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '8682782d33msh6591e390399b179p1c8e8cjsn61358ee5c4b8',
-		'X-RapidAPI-Host': 'medicine-name-and-details.p.rapidapi.com'
-	}
-};
-
-try {
-	const response = await fetch(url, options);
-	const result = await response.text();
-	console.log(result);
-} catch (error) {
-	console.error(error);
-}
-  }
+  const handleUserCurrentAddress = async () => {
+    const apiEndPoint = "https://api.opencagedata.com/geocode/v1/json";
+    const apiKey = "6d3570eebed14f6f8c5807e60371226b";
+    const query = `${center.lat},${center.lng}`
+    const apiUrl = `${apiEndPoint}?key=${apiKey}&q=${query}&pretty=1`
+    
+    try {
+      const res = await fetch(apiUrl);
+    const data = await res.json();
+     setCurrentLocation(data.results[0])
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="flex flex-1/5 flex-col p-4">
-        <h1 className="text-3xl text-center font-semibold my-7">
-          See Hospitals near by your location
+        <h1 className="text-3xl text-center font-semibold my-7 uppercase">
+          Check hospitals nearby your location
         </h1>
         <button
-          onClick={HandleLocation}
+          onClick={handleLocation}
           className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
           click to search Hospitals
         </button>
+        <div className="flex flex-col p-4 font-bold">
+          <span>City: {currentLocation.components && currentLocation.components.city}</span>
+          <span>State: {currentLocation.components && currentLocation.components.state}</span>
+          <span>Postcode: {currentLocation.components && currentLocation.components.postcode}</span>
+          <span>Country: {currentLocation.components && currentLocation.components.country}</span>
+          <span>Full Address: {currentLocation && currentLocation.formatted}</span>
+        </div>
       </div>
 
       <MapContainer center={center} zoom={5} ref={mapRef}>
@@ -68,9 +71,7 @@ try {
         />
         <MarkerClusterGroup chunkedLoading>
           <Marker position={center}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
+            <Popup></Popup>
           </Marker>
         </MarkerClusterGroup>
       </MapContainer>
