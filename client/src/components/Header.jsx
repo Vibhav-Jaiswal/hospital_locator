@@ -11,7 +11,7 @@ const Header = () => {
           <h1>Hospital Locator</h1>
         </Link>
         <ul className="flex gap-4">
-          <Link to="/">Home</Link>
+          <Link to="/location">Search Hospitals</Link>
           <Link to="/profile">
             {currentUser ? (
               <img
