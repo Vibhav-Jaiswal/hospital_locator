@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import MarkerClusterGroup from "react-leaflet-cluster";
 
 const Locator = () => {
   const [center, setCenter] = useState({ lat: 20.593683, lng: 78.962883 });
@@ -31,13 +30,13 @@ const Locator = () => {
   const handleUserCurrentAddress = async () => {
     const apiEndPoint = "https://api.opencagedata.com/geocode/v1/json";
     const apiKey = "6d3570eebed14f6f8c5807e60371226b";
-    const query = `${center.lat},${center.lng}`
-    const apiUrl = `${apiEndPoint}?key=${apiKey}&q=${query}&pretty=1`
-    
+    const query = `${center.lat},${center.lng}`;
+    const apiUrl = `${apiEndPoint}?key=${apiKey}&q=${query}&pretty=1`;
+
     try {
       const res = await fetch(apiUrl);
-    const data = await res.json();
-     setCurrentLocation(data.results[0])
+      const data = await res.json();
+      setCurrentLocation(data.results[0]);
     } catch (error) {
       console.log(error.message);
     }
@@ -56,11 +55,25 @@ const Locator = () => {
           click to search Hospitals
         </button>
         <div className="flex flex-col p-4 font-bold">
-          <span>City: {currentLocation.components && currentLocation.components.city}</span>
-          <span>State: {currentLocation.components && currentLocation.components.state}</span>
-          <span>Postcode: {currentLocation.components && currentLocation.components.postcode}</span>
-          <span>Country: {currentLocation.components && currentLocation.components.country}</span>
-          <span>Full Address: {currentLocation && currentLocation.formatted}</span>
+          <span>
+            City:{" "}
+            {currentLocation.components && currentLocation.components.city}
+          </span>
+          <span>
+            State:{" "}
+            {currentLocation.components && currentLocation.components.state}
+          </span>
+          <span>
+            Postcode:{" "}
+            {currentLocation.components && currentLocation.components.postcode}
+          </span>
+          <span>
+            Country:{" "}
+            {currentLocation.components && currentLocation.components.country}
+          </span>
+          <span>
+            Full Address: {currentLocation && currentLocation.formatted}
+          </span>
         </div>
       </div>
 
@@ -69,11 +82,9 @@ const Locator = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=uMW2FWSj3uuXB6Sr7SND"
         />
-        <MarkerClusterGroup chunkedLoading>
           <Marker position={center}>
-            <Popup></Popup>
+            <Popup>{currentLocation && currentLocation.formatted}</Popup>
           </Marker>
-        </MarkerClusterGroup>
       </MapContainer>
     </div>
   );
