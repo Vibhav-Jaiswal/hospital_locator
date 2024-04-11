@@ -29,7 +29,7 @@ const Locator = () => {
 
   const handleUserCurrentAddress = async () => {
     const apiEndPoint = "https://api.opencagedata.com/geocode/v1/json";
-    const apiKey = "6d3570eebed14f6f8c5807e60371226b";
+    const apiKey = import.meta.env.VITE_API_KEY;
     const query = `${center.lat},${center.lng}`;
     const apiUrl = `${apiEndPoint}?key=${apiKey}&q=${query}&pretty=1`;
 
@@ -82,9 +82,9 @@ const Locator = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=uMW2FWSj3uuXB6Sr7SND"
         />
-          <Marker position={center}>
-            <Popup>{currentLocation && currentLocation.formatted}</Popup>
-          </Marker>
+        <Marker position={center}>
+          <Popup>{currentLocation && currentLocation.formatted}</Popup>
+        </Marker>
       </MapContainer>
     </div>
   );
