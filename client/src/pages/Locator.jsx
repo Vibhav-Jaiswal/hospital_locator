@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
 const Locator = () => {
-  const [center, setCenter] = useState({ lat: 13.084622, lng: 80.248357 });
+  const [center, setCenter] = useState({ lat: 20.593683, lng: 78.962883 });
   const ZOOM_LEVEL = 9;
   const mapRef = useRef();
   const [hospitalData,setHospitalData] = useState({});
@@ -15,7 +15,7 @@ const Locator = () => {
       map.flyTo(center, ZOOM_LEVEL, { animate: true });
     }
     hospitalApi();
-  }, [center, ZOOM_LEVEL]);
+  }, [center]);
 
   const HandleLocation = () => {
     try {
@@ -57,11 +57,11 @@ try {
           onClick={HandleLocation}
           className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
-          See Hospitals
+          click to search Hospitals
         </button>
       </div>
 
-      <MapContainer center={center} zoom={ZOOM_LEVEL} ref={mapRef}>
+      <MapContainer center={center} zoom={5} ref={mapRef}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=uMW2FWSj3uuXB6Sr7SND"
